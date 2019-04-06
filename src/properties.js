@@ -7,8 +7,6 @@ export const INIT = "INIT";
 export const STRONG = "STRONG";
 export const WEAK = "WEAK";
 export const DONE = "DONE";
-// Commands
-export const RENDER = "RENDER";
 // Screens
 export const RED_INPUT = "RED_INPUT";
 export const GREEN_INPUT = "GREEN_INPUT";

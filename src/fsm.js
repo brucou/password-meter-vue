@@ -1,11 +1,10 @@
-import { NO_OUTPUT, NO_STATE_UPDATE, createStateMachine } from "state-transducer";
+import { NO_OUTPUT, NO_STATE_UPDATE, createStateMachine, fsmContracts } from "state-transducer";
 import {
   INIT,
   START,
   WEAK,
   STRONG,
   DONE,
-  RENDER,
   CLICKED_SUBMIT,
   TYPED_CHAR,
   INIT_SCREEN,
@@ -13,6 +12,7 @@ import {
   RED_INPUT,
   SUBMITTED_PASSWORD
 } from "./properties";
+import {COMMAND_RENDER} from "vue-state-driven"
 
 const NO_ACTIONS = () => ({ outputs: NO_OUTPUT, updates: NO_STATE_UPDATE });
 
@@ -57,21 +57,21 @@ const transitions = [
 function displayInitScreen() {
   return {
     updates: NO_STATE_UPDATE,
-    outputs: [{ command: RENDER, params: { screen: INIT_SCREEN, props: void 0 } }]
+    outputs: [{ command: COMMAND_RENDER, params: { screen: INIT_SCREEN, input: "" } }]
   };
 }
 
 function displayInputInRed(extendedState, eventData) {
   return {
     updates: [{ input: eventData }],
-    outputs: [{ command: RENDER, params: { screen: RED_INPUT, props: eventData } }]
+    outputs: [{ command: COMMAND_RENDER, params: { screen: RED_INPUT, input: eventData } }]
   };
 }
 
 function displayInputInGreen(extendedState, eventData) {
   return {
     updates: [{ input: eventData }],
-    outputs: [{ command: RENDER, params: { screen: GREEN_INPUT, props: eventData } }]
+    outputs: [{ command: COMMAND_RENDER, params: { screen: GREEN_INPUT, input: eventData } }]
   };
 }
 
@@ -81,8 +81,8 @@ function displaySubmittedPassword(extendedState, eventData) {
     updates: NO_STATE_UPDATE,
     outputs: [
       {
-        command: RENDER,
-        params: { screen: SUBMITTED_PASSWORD, props: password }
+        command: COMMAND_RENDER,
+        params: { screen: SUBMITTED_PASSWORD, password }
       }
     ]
   };
@@ -120,7 +120,7 @@ function updateState(extendedState, extendedStateUpdates) {
 }
 
 const passwordMeterFsm= createStateMachine(pwdFsmDef, {
-    debug: { console }
+    debug: { console, checkContracts: fsmContracts }
 });
 
 export { passwordMeterFsm };

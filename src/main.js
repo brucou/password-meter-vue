@@ -1,29 +1,28 @@
-import PasswordMeter from "./PasswordMeter"
 import Vue from 'vue'
-import { events } from "./properties";
 import emitonoff from "emitonoff";
-import { commandHandlers, effectHandlers, passwordMeterFsm } from "./fsm";
+import { passwordMeterFsm } from "./fsm";
+import PasswordMeter from "./PasswordMeter";
+import { commandHandlers, effectHandlers } from "./passwordVueMachineDef";
 import { makeVueStateMachine } from "vue-state-driven";
-import {getEventEmitterAdapter} from "./helpers"
+import { getEventEmitterAdapter } from "./helpers"
+import "./styles.css";
 
 Vue.config.productionTip = false
-
-const options = { initialEvent: { START: void 0 } };
 
 makeVueStateMachine({
   name: 'App',
   renderWith: PasswordMeter,
-  props: ["input", "password"],
+  props: ["screen", "input", "password"],
   fsm: passwordMeterFsm,
   commandHandlers,
   effectHandlers,
-  subjectFactory: () => getEventEmitterAdapter(emitonoff),
-  options,
+  subjectFactory: getEventEmitterAdapter(emitonoff).subjectFactory,
+  options: { initialEvent: { START: void 0 } },
   Vue
 });
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  template: '<App/>'
+  template: '<App />'
 })
