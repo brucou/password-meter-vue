@@ -1,8 +1,10 @@
+// TODO: update codesnadbox
 import Vue from 'vue'
 import emitonoff from "emitonoff";
 import { passwordMeterFsm } from "./fsm";
 import PasswordMeter from "./PasswordMeter";
 import { commandHandlers, effectHandlers } from "./passwordVueMachineDef";
+// import { makeVueStateMachine } from "./vue-state-driven";
 import { makeVueStateMachine } from "vue-state-driven";
 import { getEventEmitterAdapter } from "./helpers"
 import "./styles.css";
@@ -16,7 +18,7 @@ makeVueStateMachine({
   fsm: passwordMeterFsm,
   commandHandlers,
   effectHandlers,
-  subjectFactory: getEventEmitterAdapter(emitonoff).subjectFactory,
+  eventHandler : getEventEmitterAdapter(emitonoff),
   options: { initialEvent: { START: void 0 } },
   Vue
 });
